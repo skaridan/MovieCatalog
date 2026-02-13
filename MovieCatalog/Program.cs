@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MovieCatalog.Data;
 
@@ -11,7 +10,10 @@ namespace MovieCatalog
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            string? connectionString = builder
+                .Configuration
+                .GetConnectionString("MyConnectionString") ??
+                throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
