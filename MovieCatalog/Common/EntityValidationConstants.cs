@@ -10,6 +10,9 @@
             public const int DescriptionMinLength = 50;
             public const int DescriptionMaxLength = 500;
 
+            public const int ImageUrlMinLenght = 7;
+            public const int ImageUrlMaxLenght = 2048;
+
             public const int DurationMinSpan = 30;
             public const int DurationMaxSpan = 240;
         }

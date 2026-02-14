@@ -17,7 +17,7 @@ namespace MovieCatalog.Models
         [MaxLength(DirectorLastNameMaxLength)]
         public string LastName { get; set; } = null!;
 
-        public DateTime? BirthDate { get; set; }
+        public DateTime BirthDate { get; set; }
 
         public ICollection<Movie> Movies { get; set; } 
             = new List<Movie>();

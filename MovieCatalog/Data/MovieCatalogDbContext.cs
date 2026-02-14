@@ -5,9 +5,9 @@ using MovieCatalog.Models;
 
 namespace MovieCatalog.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class MovieCatalogDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public MovieCatalogDbContext(DbContextOptions<MovieCatalogDbContext> options)
             : base(options)
         {
         }
@@ -21,6 +21,8 @@ namespace MovieCatalog.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.ApplyConfigurationsFromAssembly(typeof(MovieCatalogDbContext).Assembly);
         }
     }
 }

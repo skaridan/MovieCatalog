@@ -18,6 +18,10 @@ namespace MovieCatalog.Models
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; } = null!;
 
+        [Required]
+        [MaxLength(ImageUrlMaxLenght)]
+        public string ImageUrl { get; set; } = null!;
+
         public DateOnly ReleaseYear { get; set; }
 
         public int Duration { get; set; }

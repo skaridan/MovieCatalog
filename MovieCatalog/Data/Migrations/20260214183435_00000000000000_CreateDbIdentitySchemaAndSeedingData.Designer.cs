@@ -9,11 +9,11 @@ using MovieCatalog.Data;
 
 #nullable disable
 
-namespace MovieCatalog.Data.Migrations
+namespace MovieCatalog.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260213100517_InitialDbMigration")]
-    partial class InitialDbMigration
+    [DbContext(typeof(MovieCatalogDbContext))]
+    [Migration("20260214183435_00000000000000_CreateIdentitySchema")]
+    partial class _00000000000000_CreateIdentitySchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -231,7 +231,7 @@ namespace MovieCatalog.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("BirthDate")
+                    b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
@@ -247,6 +247,29 @@ namespace MovieCatalog.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Directors");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BirthDate = new DateTime(1970, 7, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Christopher",
+                            LastName = "Nolan"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BirthDate = new DateTime(1959, 1, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Frank",
+                            LastName = "Darabont"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BirthDate = new DateTime(1965, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Lana",
+                            LastName = "Wachowski"
+                        });
                 });
 
             modelBuilder.Entity("MovieCatalog.Models.Genre", b =>
@@ -265,6 +288,23 @@ namespace MovieCatalog.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genres");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Sci-Fi"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Drama"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Action"
+                        });
                 });
 
             modelBuilder.Entity("MovieCatalog.Models.Movie", b =>
@@ -289,6 +329,11 @@ namespace MovieCatalog.Data.Migrations
                     b.Property<int>("GenreId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
+
                     b.Property<DateOnly>("ReleaseYear")
                         .HasColumnType("date");
 
@@ -304,6 +349,41 @@ namespace MovieCatalog.Data.Migrations
                     b.HasIndex("GenreId");
 
                     b.ToTable("Movies");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "A skilled thief enters dreams to steal secrets but gets a chance at redemption.",
+                            DirectorId = 1,
+                            Duration = 148,
+                            GenreId = 1,
+                            ImageUrl = "https://m.media-amazon.com/images/I/51zUbui+gbL._AC_.jpg",
+                            ReleaseYear = new DateOnly(2010, 1, 1),
+                            Title = "Inception"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Two imprisoned men bond over the years and find hope through friendship.",
+                            DirectorId = 2,
+                            Duration = 142,
+                            GenreId = 2,
+                            ImageUrl = "https://m.media-amazon.com/images/I/51NiGlapXlL._AC_.jpg",
+                            ReleaseYear = new DateOnly(1994, 1, 1),
+                            Title = "The Shawshank Redemption"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "A hacker discovers the truth about reality and his role in the war against its controllers.",
+                            DirectorId = 3,
+                            Duration = 136,
+                            GenreId = 1,
+                            ImageUrl = "https://m.media-amazon.com/images/I/51EG732BV3L.jpg",
+                            ReleaseYear = new DateOnly(1999, 1, 1),
+                            Title = "The Matrix"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
