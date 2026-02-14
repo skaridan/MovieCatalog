@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Movie>
+﻿@model IEnumerable<MovieAllViewModel>
 
 @{
     ViewData["Title"] = "All Movies";
@@ -129,7 +129,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (Movie movie in Model)
+            @foreach (MovieAllViewModel movie in Model)
             {
                 <tr>
                     <td>
@@ -139,8 +139,8 @@
                     <td><span style="color: #555;">@movie.Description</span></td>
                     <td><span class="year-badge">@movie.ReleaseYear.Year</span></td>
                     <td><span class="duration-badge">@movie.Duration min</span></td>
-                    <td><span class="genre-badge">@movie.Genre.Name</span></td>
-                    <td class="director-name">@movie.Director.FirstName @movie.Director.LastName</td>
+                    <td><span class="genre-badge">@movie.GenreName</span></td>
+                    <td class="director-name">@movie.DirectorFirstName @movie.DirectorLastName</td>
                 </tr>
             }
         </tbody>

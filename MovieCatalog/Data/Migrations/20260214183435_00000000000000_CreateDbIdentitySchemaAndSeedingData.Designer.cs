@@ -13,7 +13,7 @@ namespace MovieCatalog.Migrations
 {
     [DbContext(typeof(MovieCatalogDbContext))]
     [Migration("20260214183435_00000000000000_CreateIdentitySchema")]
-    partial class _00000000000000_CreateIdentitySchema
+    partial class _00000000000000_CreateDbIdentitySchemaAndSeedingData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
