@@ -4,8 +4,8 @@
     {
         public static class Movie
         {
-            public const int MovieTitleMinLength = 2;
-            public const int MovieTitleMaxLength = 150;
+            public const int TitleMinLength = 2;
+            public const int TitleMaxLength = 150;
 
             public const int DescriptionMinLength = 50;
             public const int DescriptionMaxLength = 500;
@@ -30,6 +30,9 @@
 
             public const int DirectorLastNameMinLength = 2;
             public const int DirectorLastNameMaxLength = 50;
+
+            public const int DirectorMinAge = 18;
+            public const int DirectorMaxAge = 100;
         }
     }
 }

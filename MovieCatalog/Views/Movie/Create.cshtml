@@ -1,0 +1,213 @@
+﻿@model MovieAddInputModel
+
+@{
+	ViewData["Title"] = "Add New Movie";
+}
+
+<style>
+	body {
+		background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+		min-height: 100vh;
+	}
+
+	.card {
+		background: white !important;
+	}
+</style>
+
+<div class="container mt-4">
+	<div class="row">
+		<div class="col-md-8 offset-md-2">
+
+			<h1 class="display-4 fw-bold text-primary">
+				<i class="bi bi-film me-2"></i>Add New Movie
+			</h1>
+
+			<div class="card shadow-lg border-0 rounded-4">
+				<div class="card-header bg-transparent border-0 pt-4">
+					<ul class="nav nav-tabs card-header-tabs" id="movieTab" role="tablist">
+						<li class="nav-item" role="presentation">
+							<button class="nav-link active" id="movie-tab" data-bs-toggle="tab" data-bs-target="#movie" type="button" role="tab" aria-controls="movie" aria-selected="true">
+								<i class="bi bi-camera-reels me-2"></i>Movie Details
+							</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="director-tab" data-bs-toggle="tab" data-bs-target="#director" type="button" role="tab" aria-controls="director" aria-selected="false">
+								<i class="bi bi-person-badge me-2"></i>Director Info
+							</button>
+						</li>
+					</ul>
+				</div>
+
+				<div class="card-body p-4">
+					<form asp-action="Create" method="post">
+						<div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+						<div class="tab-content" id="movieTabContent">
+
+							<div class="tab-pane fade show active" id="movie" role="tabpanel" aria-labelledby="movie-tab">
+
+								<div class="form-group mb-4">
+									<label asp-for="Title" class="form-label fw-semibold">
+										<i class="bi bi-card-heading text-primary me-2"></i>Title
+									</label>
+									<div class="input-group">
+										<span class="input-group-text bg-light border-end-0">
+											<i class="bi bi-film text-primary"></i>
+										</span>
+										<input asp-for="Title" class="form-control border-start-0 ps-0" placeholder="e.g., The Shawshank Redemption" />
+									</div>
+									<span asp-validation-for="Title" class="text-danger small"></span>
+									<div class="form-text">
+										<i class="bi bi-info-circle text-info me-1"></i>Title length: 2-150 characters
+									</div>
+								</div>
+
+								<div class="form-group mb-4">
+									<label asp-for="Description" class="form-label fw-semibold">
+										<i class="bi bi-text-paragraph text-primary me-2"></i>Description
+									</label>
+									<textarea asp-for="Description" class="form-control" rows="5" placeholder="Enter movie plot or description..."></textarea>
+									<span asp-validation-for="Description" class="text-danger small"></span>
+									<div class="form-text">
+										<i class="bi bi-info-circle text-info me-1"></i>Minimum 50, maximum 500 characters
+									</div>
+								</div>
+
+								<div class="form-group mb-4">
+									<label asp-for="ImageUrl" class="form-label fw-semibold">
+										<i class="bi bi-image text-primary me-2"></i>Image URL
+									</label>
+									<div class="input-group">
+										<span class="input-group-text bg-light">
+											<i class="bi bi-link-45deg text-primary"></i>
+										</span>
+										<input asp-for="ImageUrl" class="form-control" placeholder="https://example.com/movie-poster.jpg" />
+									</div>
+									<span asp-validation-for="ImageUrl" class="text-danger small"></span>
+									<div class="form-text">
+										<i class="bi bi-info-circle text-info me-1"></i>Enter a valid URL for the movie poster
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-4 mb-4">
+										<div class="form-group">
+											<label asp-for="ReleaseYear" class="form-label fw-semibold">
+												<i class="bi bi-calendar-event text-primary me-2"></i>Release Year
+											</label>
+											<div class="input-group">
+												<span class="input-group-text bg-light">
+													<i class="bi bi-calendar text-primary"></i>
+												</span>
+												<input asp-for="ReleaseYear" class="form-control" type="date" />
+											</div>
+											<span asp-validation-for="ReleaseYear" class="text-danger small"></span>
+										</div>
+									</div>
+
+									<div class="col-md-4 mb-4">
+										<div class="form-group">
+											<label asp-for="Duration" class="form-label fw-semibold">
+												<i class="bi bi-clock-history text-primary me-2"></i>Duration
+											</label>
+											<div class="input-group">
+												<span class="input-group-text bg-light">
+													<i class="bi bi-clock text-primary"></i>
+												</span>
+												<input asp-for="Duration" class="form-control" type="number" min="30" max="240" value="90" />
+												<span class="input-group-text bg-light">min</span>
+											</div>
+											<span asp-validation-for="Duration" class="text-danger small"></span>
+											<div class="form-text">
+												<i class="bi bi-info-circle text-info me-1"></i>Minutes (30-240)
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-4 mb-4">
+										<div class="form-group">
+											<label asp-for="GenreId" class="form-label fw-semibold">
+												<i class="bi bi-tags text-primary me-2"></i>Genre
+											</label>
+											<div class="input-group">
+												<span class="input-group-text bg-light">
+													<i class="bi bi-collection text-primary"></i>
+												</span>
+												<select asp-for="GenreId" class="form-select" asp-items="@(new SelectList(Model.Genres, "Id", "Name"))">
+													<option value="">-- Select Genre --</option>
+												</select>
+											</div>
+											<span asp-validation-for="GenreId" class="text-danger small"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="tab-pane fade" id="director" role="tabpanel" aria-labelledby="director-tab">
+								<div class="text-center mb-4">
+									<i class="bi bi-person-video3 display-1 text-primary"></i>
+									<h3 class="mt-3">Director Information</h3>
+									<p class="text-muted">Tell us about the person behind the camera</p>
+								</div>
+
+								<div class="row">
+									<div class="col-md-6 mb-4">
+										<div class="form-group">
+											<label asp-for="DirectorFirstName" class="form-label fw-semibold">
+												<i class="bi bi-person-circle text-primary me-2"></i>First Name
+											</label>
+											<div class="input-group">
+												<span class="input-group-text bg-light">
+													<i class="bi bi-person text-primary"></i>
+												</span>
+												<input asp-for="DirectorFirstName" class="form-control" placeholder="e.g., Frank" />
+											</div>
+											<span asp-validation-for="DirectorFirstName" class="text-danger small"></span>
+											<div class="form-text">
+												<i class="bi bi-info-circle text-info me-1"></i>3-100 characters
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-6 mb-4">
+										<div class="form-group">
+											<label asp-for="DirectorLastName" class="form-label fw-semibold">
+												<i class="bi bi-person-circle text-primary me-2"></i>Last Name
+											</label>
+											<div class="input-group">
+												<span class="input-group-text bg-light">
+													<i class="bi bi-person text-primary"></i>
+												</span>
+												<input asp-for="DirectorLastName" class="form-control" placeholder="e.g., Darabont" />
+											</div>
+											<span asp-validation-for="DirectorLastName" class="text-danger small"></span>
+											<div class="form-text">
+												<i class="bi bi-info-circle text-info me-1"></i>2-50 characters
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+							<a asp-action="All" class="btn btn-outline-secondary btn-lg">
+								<i class="bi bi-arrow-left me-2"></i>Back to List
+							</a>
+							<button type="submit" class="btn btn-primary btn-lg px-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+								<i class="bi bi-plus-circle me-2"></i>Create Movie
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

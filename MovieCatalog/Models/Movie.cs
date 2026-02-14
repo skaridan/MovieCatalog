@@ -11,7 +11,7 @@ namespace MovieCatalog.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(MovieTitleMaxLength)]
+        [MaxLength(TitleMaxLength)]
         public string Title { get; set; } = null!;
 
         [Required]
