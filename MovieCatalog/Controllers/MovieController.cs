@@ -274,6 +274,69 @@ namespace MovieCatalog.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
+            Movie? movie = dbContext.Movies
+                .Include(m => m.Genre)
+                .Include(m => m.Director)
+                .AsNoTracking()
+                .SingleOrDefault(m => m.Id == id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            MovieDeleteViewModel viewModel = new MovieDeleteViewModel
+            {
+                Id = movie.Id,
+                Title = movie.Title
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(MovieDeleteViewModel viewModel, int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
+            Movie? movie = dbContext.Movies
+                .Include(m => m.Genre)
+                .Include(m => m.Director)
+                .SingleOrDefault(m => m.Id == id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                dbContext.Movies.Remove(movie);
+                dbContext.SaveChanges();
+
+                return RedirectToAction(nameof(All));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+
+                ModelState.AddModelError(string.Empty, "An error occurred while deleting the movie. Please try again.");
+
+                return RedirectToAction(nameof(Details), new { id });
+            }
+        }
+
         private IEnumerable<GenreViewModel> FetchGenres()
         {
             return dbContext.Genres
