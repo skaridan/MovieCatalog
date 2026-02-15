@@ -1,8 +1,102 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+	html, body {
+		margin: 0;
+		padding: 0;
+		height: 100%;
+		width: 100%;
+		overflow-x: hidden;
+	}
+
+	body {
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #ff6b6b 100%);
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	}
+
+	.hero-section {
+		min-height: 100vh;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		color: white;
+		position: relative;
+	}
+
+	.hero-content {
+		max-width: 900px;
+		padding: 20px;
+	}
+
+	.hero-badge {
+		background: rgba(255,255,255,0.2);
+		backdrop-filter: blur(10px);
+		padding: 10px 30px;
+		border-radius: 50px;
+		display: inline-block;
+		margin-bottom: 30px;
+		font-size: 1.1em;
+		letter-spacing: 2px;
+		border: 1px solid rgba(255,255,255,0.3);
+		box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+	}
+
+	.hero-title {
+		font-size: 5.5em;
+		font-weight: 800;
+		margin-bottom: 20px;
+		text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+		background: linear-gradient(135deg, #fff 0%, #ffd700 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+
+	.hero-subtitle {
+		font-size: 1.4em;
+		margin-bottom: 40px;
+		opacity: 0.95;
+		line-height: 1.8;
+		text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+	}
+
+	.show-movies-btn {
+		background: linear-gradient(45deg, #ffd700, #ffa500);
+		color: #1a1a2e;
+		padding: 20px 70px;
+		border-radius: 60px;
+		font-size: 1.8em;
+		font-weight: 700;
+		text-decoration: none;
+		display: inline-block;
+		transition: all 0.4s ease;
+		box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+		border: 3px solid transparent;
+		text-transform: uppercase;
+		letter-spacing: 3px;
+	}
+
+		.show-movies-btn:hover {
+			transform: translateY(-8px) scale(1.05);
+			box-shadow: 0 25px 50px rgba(255, 215, 0, 0.6);
+			background: linear-gradient(45deg, #ffa500, #ffd700);
+			border-color: white;
+		}
+</style>
+
+<div class="hero-section">
+	<div class="hero-content">
+		<span class="hero-badge">🎬 CINEMA COLLECTION</span>
+		<h1 class="hero-title">MovieCatalog</h1>
+		<p class="hero-subtitle">
+			Your personal gateway to the world of cinema.<br />
+			Discover, collect, and share your favorite movies.
+		</p>
+		<a asp-controller="Movie" asp-action="All" class="show-movies-btn">
+			SHOW MOVIES
+		</a>
+	</div>
 </div>
