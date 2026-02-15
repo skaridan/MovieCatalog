@@ -44,7 +44,7 @@ namespace MovieCatalog.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            MovieAddInputModel inputModel = new MovieAddInputModel
+            MovieInputModel inputModel = new MovieInputModel
             {
                 Genres = FetchGenres().ToList()
             };
@@ -53,7 +53,7 @@ namespace MovieCatalog.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(MovieAddInputModel inputModel)
+        public IActionResult Create(MovieInputModel inputModel)
         {
             inputModel.Genres = FetchGenres().ToList();
 
@@ -69,28 +69,31 @@ namespace MovieCatalog.Controllers
                 return View(inputModel);
             }
 
+            bool directorExists =
+                DirectorExists(inputModel.DirectorFirstName, inputModel.DirectorLastName);
+
+            Director director;
+
+            if (directorExists)
+            {
+                director = dbContext.Directors
+                    .FirstOrDefault(d => d.FirstName == inputModel.DirectorFirstName
+                    && d.LastName == inputModel.DirectorLastName)!;
+            }
+            else
+            {
+                director = new Director
+                {
+                    FirstName = inputModel.DirectorFirstName,
+                    LastName = inputModel.DirectorLastName,
+                    BirthDate = DateTime.UtcNow
+                };
+            }
+
             try
             {
-                bool directorExists =
-                    DirectorExists(inputModel.DirectorFirstName, inputModel.DirectorLastName);
-
-                Director director;
-
-                if (directorExists)
+                if (!directorExists)
                 {
-                    director = dbContext.Directors
-                        .FirstOrDefault(d => d.FirstName == inputModel.DirectorFirstName
-                        && d.LastName == inputModel.DirectorLastName)!;
-                }
-                else
-                {
-                    director = new Director
-                    {
-                        FirstName = inputModel.DirectorFirstName,
-                        LastName = inputModel.DirectorLastName,
-                        BirthDate = DateTime.UtcNow
-                    };
-
                     dbContext.Directors.Add(director);
                     dbContext.SaveChanges();
                 }
@@ -154,6 +157,121 @@ namespace MovieCatalog.Controllers
             };
 
             return View(movieViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
+            Movie? movie = dbContext.Movies
+                .Include(m => m.Genre)
+                .Include(m => m.Director)
+                .AsNoTracking()
+                .SingleOrDefault(m => m.Id == id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            MovieInputModel inputModel = new MovieInputModel
+            {
+                Title = movie.Title,
+                Description = movie.Description,
+                ImageUrl = movie.ImageUrl,
+                ReleaseYear = movie.ReleaseYear,
+                Duration = movie.Duration,
+                GenreId = movie.Genre.Id,
+                DirectorFirstName = movie.Director.FirstName,
+                DirectorLastName = movie.Director.LastName,
+                Genres = FetchGenres().ToList()
+            };
+
+            return View(inputModel);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(MovieInputModel inputModel, int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
+            Movie? movie = dbContext.Movies
+                .Include(m => m.Genre)
+                .Include(m => m.Director)
+                .SingleOrDefault(m => m.Id == id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            inputModel.Genres = FetchGenres().ToList();
+
+            if (!ModelState.IsValid)
+            {
+                return View(inputModel);
+            }
+
+            if (!GenreExists(inputModel.GenreId))
+            {
+                ModelState.AddModelError(nameof(inputModel.GenreId), "Invalid Genre is selected!");
+
+                return View(inputModel);
+            }
+
+            bool directorExists =
+                DirectorExists(inputModel.DirectorFirstName, inputModel.DirectorLastName);
+
+            Director director;
+
+            if (directorExists)
+            {
+                director = dbContext.Directors
+                    .FirstOrDefault(d => d.FirstName == inputModel.DirectorFirstName
+                        && d.LastName == inputModel.DirectorLastName)!;
+            }
+            else
+            {
+                director = new Director
+                {
+                    FirstName = inputModel.DirectorFirstName,
+                    LastName = inputModel.DirectorLastName,
+                    BirthDate = DateTime.UtcNow
+                };
+
+                dbContext.Directors.Add(director);
+                dbContext.SaveChanges();
+            }
+
+            try
+            {
+                movie.Title = inputModel.Title;
+                movie.Description = inputModel.Description;
+                movie.ImageUrl = inputModel.ImageUrl;
+                movie.ReleaseYear = inputModel.ReleaseYear;
+                movie.Duration = inputModel.Duration;
+                movie.GenreId = inputModel.GenreId;
+                movie.DirectorId = director.Id;
+
+                dbContext.SaveChanges();
+
+                return RedirectToAction(nameof(Details), new { id = movie.Id });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+
+                ModelState.AddModelError(string.Empty, "Unexpected error occurred while editing the movie! Please try again later.");
+
+                return View(inputModel);
+            }
         }
 
         private IEnumerable<GenreViewModel> FetchGenres()

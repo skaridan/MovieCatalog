@@ -7,7 +7,7 @@ using static MovieCatalog.Common.EntityValidationConstants.Director;
 
 namespace MovieCatalog.ViewModels.Movie
 {
-    public class MovieAddInputModel
+    public class MovieInputModel
     {
         [Required]
         [MinLength(TitleMinLength)]

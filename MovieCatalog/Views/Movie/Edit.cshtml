@@ -1,0 +1,255 @@
+﻿@model MovieInputModel
+
+@{
+    ViewData["Title"] = "Edit Movie";
+}
+
+<style>
+    .edit-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .edit-header {
+        background: linear-gradient(45deg, #1a1a2e, #16213e);
+        color: white;
+        padding: 30px;
+        border-radius: 15px 15px 0 0;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        text-align: center;
+    }
+
+        .edit-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+    .edit-form {
+        background: white;
+        border-radius: 0 0 15px 15px;
+        padding: 40px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+        .form-group label {
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+            display: block;
+            font-size: 1.1em;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1em;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .btn-submit {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        padding: 14px 30px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+    .btn-back {
+        background: #6c757d;
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 20px;
+    }
+
+        .btn-back:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 0.9em;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .image-preview {
+        margin-top: 15px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+        .image-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+    hr {
+        background: linear-gradient(90deg, transparent, #667eea, #764ba2, transparent);
+        height: 3px;
+        border: none;
+        margin: 20px 0;
+    }
+</style>
+
+<div class="edit-container">
+    <div class="edit-header">
+        <h1>✏️ Edit Movie</h1>
+        <p>Update the movie information below</p>
+    </div>
+
+    <div class="edit-form">
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Title">Movie Title</label>
+                <input asp-for="Title" class="form-control" placeholder="Enter movie title" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description">Description</label>
+                <textarea asp-for="Description" class="form-control" placeholder="Enter movie description"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ImageUrl">Image URL</label>
+                <input asp-for="ImageUrl" class="form-control" placeholder="Enter image URL" />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+
+                <div class="image-preview">
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img src="@Model.ImageUrl" alt="Preview" />
+                    }
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="ReleaseYear">Release Year</label>
+                    <input asp-for="ReleaseYear" class="form-control" type="date" />
+                    <span asp-validation-for="ReleaseYear" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Duration">Duration (minutes)</label>
+                    <input asp-for="Duration" class="form-control" type="number" min="1" max="500" />
+                    <span asp-validation-for="Duration" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="GenreId">Genre</label>
+                <select asp-for="GenreId" class="form-control">
+                    <option value="">-- Select Genre --</option>
+                    @foreach (var genre in Model.Genres)
+                    {
+                        <option value="@genre.Id">@genre.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="GenreId" class="text-danger"></span>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="DirectorFirstName">Director First Name</label>
+                    <input asp-for="DirectorFirstName" class="form-control" placeholder="First name" />
+                    <span asp-validation-for="DirectorFirstName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="DirectorLastName">Director Last Name</label>
+                    <input asp-for="DirectorLastName" class="form-control" placeholder="Last name" />
+                    <span asp-validation-for="DirectorLastName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <hr />
+
+            <button type="submit" class="btn-submit">
+                💾 Save Changes
+            </button>
+        </form>
+
+        <div class="text-center">
+            <a asp-action="Details" asp-route-id="@ViewContext.RouteData.Values["id"]" class="btn-back">
+                ⬅️ Cancel and Go Back
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    footer {
+        background: linear-gradient(45deg, #1a1a2e, #16213e);
+        color: white !important;
+        padding: 20px;
+        border-radius: 10px 10px 0 0;
+        margin-top: 30px;
+    }
+
+        footer a {
+            color: #667eea !important;
+            transition: color 0.3s ease;
+        }
+
+            footer a:hover {
+                color: #764ba2 !important;
+                text-decoration: none;
+            }
+</style>
