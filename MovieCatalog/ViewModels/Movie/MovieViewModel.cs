@@ -1,6 +1,6 @@
 ﻿namespace MovieCatalog.ViewModels.Movie
 {
-    public class MovieAllViewModel
+    public class MovieViewModel
     {
         public int Id { get; set; }
 

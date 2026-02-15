@@ -18,12 +18,13 @@ namespace MovieCatalog.Controllers
         [HttpGet]
         public IActionResult All()
         {
-            IEnumerable<MovieAllViewModel> allMovies = dbContext.Movies
+            IEnumerable<MovieViewModel> allMovies = dbContext.Movies
                 .Include(m => m.Genre)
                 .Include(m => m.Director)
                 .AsNoTracking()
-                .Select(m => new MovieAllViewModel
+                .Select(m => new MovieViewModel
                 {
+                    Id = m.Id,
                     Title = m.Title,
                     Description = m.Description,
                     ImageUrl = m.ImageUrl,
@@ -118,6 +119,41 @@ namespace MovieCatalog.Controllers
 
                 return View(inputModel);
             }
+        }
+
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
+            Movie? movie = dbContext.Movies
+                .Include(m => m.Genre)
+                .Include(m => m.Director)
+                .AsNoTracking()
+                .SingleOrDefault(m => m.Id == id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            MovieViewModel movieViewModel = new MovieViewModel
+            {
+                Id = movie.Id,
+                Title = movie.Title,
+                Description = movie.Description,
+                ImageUrl = movie.ImageUrl,
+                ReleaseYear = movie.ReleaseYear,
+                Duration = movie.Duration,
+                GenreName = movie.Genre.Name,
+                DirectorFirstName = movie.Director.FirstName,
+                DirectorLastName = movie.Director.LastName
+            };
+
+            return View(movieViewModel);
         }
 
         private IEnumerable<GenreViewModel> FetchGenres()

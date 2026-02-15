@@ -1,0 +1,323 @@
+﻿@model MovieViewModel
+
+@{
+    ViewData["Title"] = $"{Model.Title} - Details";
+}
+
+<style>
+    .details-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .movie-header {
+        background: linear-gradient(45deg, #1a1a2e, #16213e);
+        color: white;
+        padding: 40px;
+        border-radius: 15px 15px 0 0;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        text-align: center;
+    }
+
+        .movie-header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+    .genre-badge-large {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        padding: 10px 30px;
+        border-radius: 50px;
+        font-size: 1.3em;
+        display: inline-block;
+        box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+    }
+
+    .movie-content {
+        display: flex;
+        gap: 40px;
+        background: white;
+        border-radius: 0 0 15px 15px;
+        padding: 40px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .movie-poster {
+        flex: 0 0 350px;
+    }
+
+        .movie-poster img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+            .movie-poster img:hover {
+                transform: scale(1.02);
+            }
+
+    .movie-info {
+        flex: 1;
+    }
+
+    .info-section {
+        margin-bottom: 30px;
+        padding: 25px;
+        background: #f8f9fa;
+        border-radius: 15px;
+        border-left: 4px solid #667eea;
+    }
+
+        .info-section h3 {
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .info-item {
+        padding: 20px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+        .info-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .info-item .label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-item .value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .info-item .unit {
+            font-size: 0.6em;
+            color: #666;
+            margin-left: 5px;
+        }
+
+    .movie-description {
+        line-height: 1.8;
+        color: #444;
+        font-size: 1.1em;
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
+    }
+
+    .director-card {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .director-avatar {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5em;
+        color: white;
+    }
+
+    .director-details h4 {
+        color: #1a1a2e;
+        font-size: 1.5em;
+        margin-bottom: 5px;
+    }
+
+    .director-details p {
+        color: #666;
+        font-size: 1.1em;
+    }
+
+    .action-buttons {
+        margin-top: 30px;
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .btn-edit, .btn-delete, .btn-back {
+        padding: 12px 30px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-edit {
+        background: #ffc107;
+        color: #212529;
+    }
+
+        .btn-edit:hover {
+            background: #e0a800;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+            color: #212529;
+            text-decoration: none;
+        }
+
+    .btn-delete {
+        background: #dc3545;
+        color: white;
+    }
+
+        .btn-delete:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+
+    .btn-back {
+        background: #6c757d;
+        color: white;
+    }
+
+        .btn-back:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+
+    hr {
+        background: linear-gradient(90deg, transparent, #667eea, #764ba2, transparent);
+        height: 3px;
+        border: none;
+        margin: 20px 0;
+    }
+</style>
+
+<div class="details-container">
+    <div class="movie-header">
+        <h1>@Model.Title</h1>
+        <span class="genre-badge-large">@Model.GenreName</span>
+    </div>
+
+    <div class="movie-content">
+        <div class="movie-poster">
+            <img src="@Model.ImageUrl" alt="@Model.Title" />
+        </div>
+
+        <div class="movie-info">
+            <div class="info-section">
+                <h3>📖 Storyline</h3>
+                <p class="movie-description">@Model.Description</p>
+            </div>
+
+            <div class="info-section">
+                <h3>🎬 Movie Details</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="label">Release Year</div>
+                        <div class="value">@Model.ReleaseYear.Year</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Duration</div>
+                        <div class="value">
+                            @Model.Duration<span class="unit">min</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Film Age</div>
+                        <div class="value">
+                            @(DateTime.Now.Year - Model.ReleaseYear.Year)<span class="unit">years</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3>🎥 Director</h3>
+                <div class="director-card">
+                    <div class="director-avatar">
+                        🎬
+                    </div>
+                    <div class="director-details">
+                        <h4>@Model.DirectorFirstName @Model.DirectorLastName</h4>
+                        <p>Film Director</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-edit">
+                    <span>✏️</span> Edit Movie
+                </a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn-delete"
+                   onclick="return confirm('Are you sure you want to delete @Model.Title?')">
+                    <span>🗑️</span> Delete Movie
+                </a>
+                <a asp-action="All" class="btn-back">
+                    <span>⬅️</span> Back to All Movies
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    footer {
+        background: linear-gradient(45deg, #1a1a2e, #16213e);
+        color: white !important;
+        padding: 20px;
+        border-radius: 10px 10px 0 0;
+        margin-top: 30px;
+    }
+
+        footer a {
+            color: #667eea !important;
+            transition: color 0.3s ease;
+        }
+
+            footer a:hover {
+                color: #764ba2 !important;
+                text-decoration: none;
+            }
+</style>
