@@ -16,11 +16,23 @@ namespace MovieCatalog.Controllers
         }
 
         [HttpGet]
-        public IActionResult All()
+        public IActionResult All(string searchingString)
         {
-            IEnumerable<MovieViewModel> allMovies = dbContext.Movies
+            IQueryable<Movie> moviesQuery = dbContext.Movies
                 .Include(m => m.Genre)
                 .Include(m => m.Director)
+                .AsNoTracking()
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchingString))
+            {
+                searchingString = searchingString.ToLower();
+
+                moviesQuery = moviesQuery
+                    .Where(m => m.Title.ToLower().Contains(searchingString));
+            }
+
+            IEnumerable<MovieViewModel> allMovies = moviesQuery
                 .AsNoTracking()
                 .Select(m => new MovieViewModel
                 {
@@ -37,6 +49,10 @@ namespace MovieCatalog.Controllers
                 .OrderBy(m => m.Title)
                 .ThenBy(m => m.GenreName)
                 .ToList();
+
+            ViewData["CurrentFilter"] = searchingString;
+
+            ViewData["ResultsCount"] = allMovies.Count();
 
             return View(allMovies);
         }
