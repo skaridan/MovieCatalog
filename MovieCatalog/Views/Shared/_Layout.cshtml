@@ -7,6 +7,48 @@
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/MovieCatalog.styles.css" asp-append-version="true" />
+	<link rel="icon" type="image/x-icon" href="~/favicon.ico?v=2" />
+
+	<style>
+		.navbar {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+			border-bottom: 3px solid #ffd700 !important;
+			box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+		}
+
+		.navbar-brand {
+			color: white !important;
+			font-weight: 700;
+			font-size: 1.5em;
+			transition: all 0.3s ease;
+		}
+
+			.navbar-brand:hover {
+				transform: scale(1.05);
+				color: #ffd700 !important;
+			}
+
+		.navbar-nav .nav-link {
+			color: rgba(255,255,255,0.9) !important;
+			font-weight: 500;
+			padding: 8px 20px !important;
+			margin: 0 5px;
+			border-radius: 25px;
+			transition: all 0.3s ease;
+		}
+
+			.navbar-nav .nav-link:hover {
+				background: rgba(255,255,255,0.2);
+				color: white !important;
+				transform: translateY(-2px);
+			}
+
+			.navbar-nav .nav-link.active {
+				background: #ffd700;
+				color: #1a1a2e !important;
+				font-weight: 600;
+			}
+	</style>
 </head>
 <body>
 	<header>
@@ -21,9 +63,6 @@
 					<ul class="navbar-nav flex-grow-1">
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Movie" asp-action="All">All Movies</a>
 						</li>
 					</ul>
 					@*
