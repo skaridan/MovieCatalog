@@ -20,11 +20,7 @@ HTML5 / CSS3
 # Setup Instructions
 1. Clone the repository
 2. Open in Visual Studio
-3. Update database connection in appsettings.json:
-json
-"ConnectionStrings": {
-  "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=MovieCatalog;Trusted_Connection=True;MultipleActiveResultSets=true"
-}
+3. Update database connection in appsettings.json
 4. Apply migrations
 5. Run the project
 6. Open in browser
